@@ -5,7 +5,7 @@ for (let i = 0; i < posts.length; i++) {
     .then((json) => {
       return json.json();
     }).then((res) => {
-      posts[i] = res.html.split(`<script async defer src="//www.instagram.com/embed.js"></script>`)[0];
+      document.querySelector("#instafeed").innerHTML += res.html;
       if (i == posts.length-1) {
         renderPosts();
       }
@@ -13,5 +13,9 @@ for (let i = 0; i < posts.length; i++) {
 }
 function renderPosts() {
   console.log("Rendering");
-  document.querySelector("#instafeed").innerHTML = posts.join("");
+  fetch("/js/embed.js").then((js) => {
+    return js.text();
+  }).then((res) => {
+    eval(res);
+  })
 }
